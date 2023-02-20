@@ -60,6 +60,9 @@ def diseaseDistributionByGender(p_list:list[Patient]):
     dist = {"M":0, "F":0}
     for patient in p_list:
         dist[patient.gender] += 1
+    
+    dist["F"] = dist["F"] / len(p_list)
+    dist["M"] = dist["M"] / len(p_list)
     return dist
 
 def diseaseDistributionByAgeGroup(p_list:list[Patient]):
@@ -78,6 +81,9 @@ def diseaseDistributionByAgeGroup(p_list:list[Patient]):
         else:
             dist[g_str] += 1
     
+    for key in dist.keys():
+        dist[key] = dist[key] / len(p_list)
+
     for i in range(lower_group, upper_group):
         g_str = f"[{i*5}]-[{i*5+4}]"
         if g_str not in dist:
@@ -101,6 +107,9 @@ def diseaseDistributionByCholesterol(p_list:list[Patient]):
         else:
             dist[g_str] += 1
     
+    for key in dist.keys():
+        dist[key] = dist[key] / len(p_list)
+
     for i in range(lower_group, upper_group):
         g_str = f"[{i*10}]-[{i*10+9}]"
         if g_str not in dist:
