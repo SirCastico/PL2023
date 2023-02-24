@@ -23,6 +23,10 @@ class StringAggregateCompare:
             self.i = 0
             self.comp = ""
             return False
+    
+    def reset(self):
+        self.comp = ""
+        self.i = 0
 
 
 class Somador:
@@ -37,8 +41,10 @@ class Somador:
         for c in line:
             if(on_cmp.addAndCompare(c)):
                 self.is_on = True
+                on_cmp.reset()
             elif(off_cmp.addAndCompare(c)):
                 self.is_on = False
+                off_cmp.reset()
             elif(c=="="):
                 print(self.soma)
             
