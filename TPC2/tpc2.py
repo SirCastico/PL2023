@@ -45,17 +45,16 @@ class Somador:
             elif(off_cmp.addAndCompare(c)):
                 self.is_on = False
                 off_cmp.reset()
-            elif(c=="="):
+            
+            if(self.is_on): 
+                if(c.isdigit()):
+                    cur_digit_str += c
+                elif(cur_digit_str != ""):
+                    self.soma += int(cur_digit_str)
+                    cur_digit_str = ""
+            
+            if(c=="="):
                 print(self.soma)
-            
-            if(not self.is_on):
-                continue
-            
-            if(c.isdigit()):
-                cur_digit_str += c
-            elif(cur_digit_str != ""):
-                self.soma += int(cur_digit_str)
-                cur_digit_str = ""
 
 
 somador = Somador()
