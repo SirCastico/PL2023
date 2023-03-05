@@ -1,5 +1,4 @@
 import re
-import json
 
 def proc_year_freq(path:str) -> dict:
     f = open(path, "r")
@@ -81,7 +80,7 @@ def name_freq(path:str):
 def relation_freq(path:str) -> dict:
     f = open(path, "r")
     d = {}
-    er = re.compile(r"[A-Z][a-z]+,(?P<rel>[A-Z](?:\w|\s)+?)[.:]")
+    er = re.compile(r"[A-Z][a-z]+,([A-Z](?:\w|\s)+?)[.]")
 
     for line in f:
         ml = er.findall(line)
@@ -106,10 +105,8 @@ def to_json(path:str):
         if len(l)>20:
             break
     
-    return json.dumps(l)
+    return str(l).replace("'", "\"") 
         
-
-    
 
 
 
