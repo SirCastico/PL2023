@@ -29,7 +29,7 @@ def name_freq(path:str):
             continue
         century = int(m.group(1))+1
         if century not in d:
-            d[century] = ({},{})
+            d[century] = [{},{}]
         first_d, last_d = d[century]
         for i in range(2,7,2):
             f_name = m.group(i)
@@ -44,16 +44,12 @@ def name_freq(path:str):
             else:
                 last_d[l_name] += 1
     
-    dl = [{},{}]
     for century in d:
-        first_d , last_d = d[century]
         for j in range(2):
-            nd = d[century][j]
-
             occ_arr = [-1,-1,-1,-1,-1]
             name_arr = ["","","","",""]
 
-            for name, occurrences in nd.items():
+            for name, occurrences in d[century][j].items():
                 for i in range(1,5):
                     if occurrences>occ_arr[i-1] and occurrences<=occ_arr[i]:
                         occ_arr[i-1] = occurrences
@@ -63,19 +59,13 @@ def name_freq(path:str):
                         occ_arr[i] = occurrences
                         name_arr[i] = name
 
+            d[century][j] = {}
+
             for i in range(5):        
-                if name_arr[i] not in dl[j]:
-                    dl[j][name_arr[i]] = occ_arr[i]
-                else:
-                    dl[j][name_arr[i]] += occ_arr[i]
+                d[century][j][name_arr[i]] = occ_arr[i]
 
-    fl = list(dl[0].items())
-    fl.sort(key=lambda x: x[1], reverse=True)
-
-    ll = list(dl[1].items())
-    ll.sort(key=lambda x: x[1], reverse=True)
     
-    return d, [fl[i] for i in range(5)], [ll[i] for i in range(5)]
+    return d
 
 def relation_freq(path:str) -> dict:
     f = open(path, "r")
@@ -120,17 +110,36 @@ l1 = list(d1.items())
 l1.sort()
 
 for year, freq in l1:
-    print(f"{year} -> freq: {freq}")
+    print(f"{year} -> {freq}")
 
 print("\n")
 
 
 print("name freq\n")
 
-d2, fl, ll = name_freq(path)
+d2 = name_freq(path)
 
-print("first name list:\n", fl)
-print("last name list:\n", ll)
+ld2 = list(d2.keys())
+ld2.sort()
+
+for century in ld2:
+    print("century: ",century)
+    print("first names:")
+    l2 = list(d2[century][0].items())
+    l2.sort(key=lambda x:x[1], reverse=True)
+
+    for name, freq in l2:
+        print(f"{name} -> {freq}")
+    
+    print("\nlast names:")
+    l2 = list(d2[century][1].items())
+    l2.sort(key=lambda x:x[1], reverse=True)
+
+    for name, freq in l2:
+        print(f"{name} -> {freq}")
+    
+    print("")
+
 
 print("\n")
 
