@@ -142,7 +142,7 @@ for line in file:
 file.close()
 output = open(sys.argv[2],"w")
 
-json.dump(entries, output)
+json.dump(entries, output, indent=4, ensure_ascii=False)
 
 output.close()
 
