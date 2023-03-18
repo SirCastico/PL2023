@@ -10,7 +10,16 @@ re_abortar = re.compile(r"^ABORTAR$")
 re_moeda = re.compile(r"^MOEDA (?P<moedas>(?:\d\d?[ec][,.]? ?)+)$")
 re_moeda_val = re.compile(r"([125]0?c|[12]e)[,.]?")
 
-re_numero = re.compile(r"T=\d{9}")
+re_numero = re.compile(r"T=(00\d+|\d{9})")
+
+num_dict = {
+    "601": -1,
+    "641": -1,
+    "00": 150,
+    "2": 25,
+    "800": 0,
+    "808": 10
+}
 
 class Start:
     def next_state(self, line:str):
@@ -53,8 +62,21 @@ class Running:
             print(f"saldo = {self.money//100}e{self.money%100}c")
 
         elif m := re_numero.match(line):
-            ...
-        
+            val = -2
+            num = m.group(1)
+            for prefix, dval in num_dict.items():
+                if num.startswith(prefix):
+                    val = dval
+                    break
+            
+            match val:
+                case -2:
+                    print("número inválido")
+                case -1:
+                    print("número bloqueado")
+                case _:
+                    self.money -= val
+                    print(f"saldo = {self.money//100}e{self.money%100}c")
         else:
             print("ação não reconhecida")
 
