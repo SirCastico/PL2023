@@ -75,8 +75,11 @@ class Running:
                 case -1:
                     print("número bloqueado")
                 case _:
-                    self.money -= val
-                    print(f"saldo = {self.money//100}e{self.money%100}c")
+                    if self.money >= val:
+                        self.money -= val
+                        print(f"chamada efetuada: saldo = {self.money//100}e{self.money%100}c")
+                    else:
+                        print(f"saldo insuficiente - saldo atual: {self.money//100}e{self.money%100}c - valor {val//100}e{val%100}c")
         else:
             print("ação não reconhecida")
 
